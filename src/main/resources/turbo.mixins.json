@@ -1,0 +1,42 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.eyad.turbo.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "client.FramerateLimitTrackerMixin",
+    "client.GuiMixin",
+    "client.SoundEngineMixin",
+    "client.ToastManagerMixin",
+    "entity.AvatarRendererMixin",
+    "entity.EntityRenderDispatcherMixin",
+    "entity.EntityRendererMixin",
+    "entity.EquipmentLayerRendererMixin",
+    "entity.GuardianRendererMixin",
+    "entity.ItemEntityRendererMixin",
+    "entity.ItemStackLayerMixin",
+    "entity.WingsLayerMixin",
+    "entity.WitherBossRendererMixin",
+    "particle.ClientLevelMixin",
+    "particle.ParticleEngineMixin",
+    "render.AtmosphericFogEnvironmentMixin",
+    "render.FogRendererMixin",
+    "render.GameRendererMixin",
+    "render.LevelRendererMixin",
+    "render.MapRendererMixin",
+    "render.PanoramaRendererMixin",
+    "render.ScreenEffectRendererMixin",
+    "render.ShieldSpecialRendererMixin",
+    "render.SkyRendererMixin",
+    "render.SpriteAnimationStateMixin",
+    "render.SpriteContentsMixin",
+    "render.WaterFogEnvironmentMixin",
+    "world.BannerRendererMixin",
+    "world.BlockEntityRenderDispatcherMixin",
+    "world.ChestRendererMixin",
+    "world.LeavesBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

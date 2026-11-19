@@ -1,0 +1,22 @@
+# Gradle / Loom
+.gradle/
+build/
+out/
+bin/
+remappedSrc/
+
+# Dev run folders
+run/
+run-server/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS / logs
+.DS_Store
+*.log

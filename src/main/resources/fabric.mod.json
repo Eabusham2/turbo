@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "turbo",
+  "version": "${version}",
+  "name": "Turbo",
+  "description": "Client-side FPS tweaks for 1.21.11 on top of Sodium: entity and block entity culling by type and distance, particle cap and filters, overlay/sky/weather switches, frozen textures, smart leaves, frame caps. Visual changes are opt-in.",
+  "authors": ["Eyad"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.eyad.turbo.TurboMod"],
+    "modmenu": ["com.eyad.turbo.gui.TurboModMenu"]
+  },
+  "mixins": ["turbo.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*",
+    "cloth-config": "*"
+  },
+  "suggests": {
+    "sodium": "*",
+    "lithium": "*",
+    "modmenu": "*"
+  }
+}
