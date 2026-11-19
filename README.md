@@ -16,7 +16,7 @@ Pick one in ModMenu → Turbo → Presets, then Save.
 |---|---|---|
 | **Minimal** (default) | Identical to vanilla | Skips the world render while minimized, skips entities and block entities fully hidden by fog, skips sounds too far away to hear. |
 | **Optimized** (recommended) | About the same | Minimal, plus: hides item frames, armor stands, paintings, dropped items, XP orbs, projectiles past 32 blocks; block entities past 48; nametags past 32; one model per dropped stack; particle cap; smart leaves; half-speed water/lava/fire animation; sound cap and de-duplication; 30 FPS when unfocused; no menu blur. |
-| **Potato** | Noticeably plainer | Every setting on, smallest distances. Also mutes all sounds and hides the scoreboard, since it is literally everything; switch those two back off if you want them. |
+| **Potato** | Noticeably plainer | Every setting on, smallest distances. Also mutes all sounds and hides the scoreboard, since it is literally everything; switch those two back off if you want them. The debug line (General tab) is left as you set it. |
 
 Changing any single setting afterwards switches the preset to **Custom**.
 

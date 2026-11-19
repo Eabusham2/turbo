@@ -58,10 +58,18 @@ shapes, adaptive render distance (reloads chunks on the fly).
   caches, leaf detail, ambient occlusion): Sodium replaces this code entirely.
 - Lighting throttles and caches: handled safely by the ScalableLux mod.
 - Memory pooling, interning and caches: FerriteCore and ModernFix; the JIT handles short-lived objects.
-- Already vanilla: frustum culling, invisible-entity skipping, block outline range, damage tilt,
-  biome blend, fast graphics, entity shadows, F1 HUD hiding, menu FPS, GUI batching, font caching,
-  only-visible chat lines.
+- Already vanilla: frustum culling, invisible-entity skipping, per-entity culling of passengers,
+  block outline range, damage tilt, biome blend, fast graphics, entity shadows, F1 HUD hiding,
+  menu FPS, GUI batching, font caching, only-visible chat lines, squared-distance checks in hot
+  paths, inventory items drawn once into an atlas and reused, block-entity and TNT draw batching
+  (the submit system groups every draw by render type).
 - Nothing in vanilla to skip: block-entity wobble, seagrass/kelp/leaf waving (shader packs only),
-  screen fade, hotbar slide, GUI-preview particles, client statistics tick, beehive/furnace renderers.
+  screen fade, hotbar slide, GUI-preview particles, client statistics tick, beehive/furnace renderers,
+  shulker tooltip previews and held-item dynamic light (mods add these, vanilla doesn't).
+- Nothing measurable to win: detailed map rendering (a map is one textured quad; markers and far
+  item frames have their own settings), baby-mob scale, first-person hand, boss bar, recipe book,
+  F3 charts (only drawn while open), tab list (only drawn while Tab is held, and its data comes
+  from the server), advancement toast queue (the Toasts setting hides them), rain and thunder
+  sound updates, the ender dragon at a distance (one entity, only in the End fight).
 - Whole replacement renderers, not toggles: billboard entities, box-only entity models, flat-colour
   blocks, wireframe world.
