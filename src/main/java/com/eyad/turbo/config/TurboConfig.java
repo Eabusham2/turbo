@@ -27,7 +27,7 @@ public class TurboConfig {
     public boolean masterEnable = true;
     @Tweak(category="General", label="Log a summary at startup", live=true)
     public boolean logStartup = true;
-    @Tweak(category="General", label="Show Turbo debug line", tooltip="Top-right corner: preset, live particles, entities and block entities skipped last frame.", live=true)
+    @Tweak(category="General", label="Show Turbo debug line", tooltip="Top-right corner: preset, FPS, live particles, and how many entities and block entities were skipped last frame, plus how many entities were hidden behind walls.", live=true)
     public boolean debugOverlay = false;
 
     // ===== Frame =====
@@ -49,6 +49,8 @@ public class TurboConfig {
     // ===== Entities =====
     @Tweak(category="Entities", label="Skip entities and block entities hidden by fog", tooltip="Underwater, in lava or powder snow, with Blindness or Darkness, and in the Nether, anything past the fog's end is drawn as pure fog colour, so it is skipped. Players, named, glowing and leashed entities and beacon beams are always drawn. Looks identical.", live=true)
     public boolean fogCulling = true;
+    @Tweak(category="Entities", label="Hide entities behind walls", tooltip="Skips drawing entities that solid blocks completely hide from where you're looking. Checked with rays every frame, so nothing pops in late. Glass, leaves, slabs and other see-through or partial blocks never hide anything. Entities showing a nametag, glowing, leashed, beams and displays are always drawn.", live=true)
+    public boolean occlusionCulling = false;
     @Tweak(category="Entities", label="Max entity render distance (0 = vanilla)", tooltip="You, your vehicle and your passengers are never hidden.", live=true)
     public int entityRenderDistance = 0;
     @Tweak(category="Entities", label="Limit nametag distance", tooltip="Vanilla draws nametags out to 64 blocks.", live=true)

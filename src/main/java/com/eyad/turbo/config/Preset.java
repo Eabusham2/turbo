@@ -54,6 +54,7 @@ public enum Preset {
         // Far-away clutter
         c.limitNametags = true;      c.nametagDistance = 32;
         c.decorEntityDistance = 32;
+        c.occlusionCulling = true;
         c.cullItemFrameMaps = true;  c.cheapPaintingRender = true;  c.cheapArmorStands = true;
         c.hideFarDroppedItems = true; c.disableXpOrbRender = true;  c.skipFallingBlockRender = true;
         c.reduceProjectileParticles = true;

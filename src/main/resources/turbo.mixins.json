@@ -11,6 +11,7 @@
     "entity.AvatarRendererMixin",
     "entity.EntityRenderDispatcherMixin",
     "entity.EntityRendererMixin",
+    "entity.EntityRendererInvoker",
     "entity.EquipmentLayerRendererMixin",
     "entity.GuardianRendererMixin",
     "entity.ItemEntityRendererMixin",

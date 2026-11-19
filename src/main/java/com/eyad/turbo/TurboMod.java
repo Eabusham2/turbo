@@ -35,9 +35,11 @@ public class TurboMod implements ClientModInitializer {
             if (!c.debugOverlay) return;
             Minecraft mc = Minecraft.getInstance();
             String text = "Turbo " + c.preset.name().toLowerCase()
+                    + " | " + mc.getFps() + " fps"
                     + " | particles " + mc.particleEngine.countParticles()
                     + " | skipped: " + RenderStats.lastEntities + " entities, "
-                    + RenderStats.lastBlockEntities + " block entities";
+                    + RenderStats.lastBlockEntities + " block entities, "
+                    + RenderStats.lastOccluded + " behind walls";
             graphics.drawString(mc.font, text, graphics.guiWidth() - mc.font.width(text) - 2, 2, 0xFFFFFFFF);
         });
 

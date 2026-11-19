@@ -4,7 +4,7 @@
 - Built against the real Minecraft 1.21.11 jar with Mojang mappings; every hook was written
   after reading the decompiled method (`./gradlew genSources`).
 - `defaultRequire: 1` in `turbo.mixins.json`: a hook that misses its target fails
-  loudly instead of silently doing nothing. All 31 mixins pass a forced Mixin audit
+  loudly instead of silently doing nothing. All 32 mixins pass a forced Mixin audit
   (`-Dturbo.mixinAudit=true`).
 - Dev client with Sodium 0.8.14 on a local server, 89 settings on at once. Scene: armor stands,
   items (enchanted and full stacks), XP, a burning armored zombie with trim and shield, a
@@ -30,6 +30,34 @@ Every hook sits in a drawing, audio or HUD path:
 | `SpriteContents` / `$AnimationState` | Texture animation speed | Texture uploads only |
 | `LeavesBlock#skipRendering` | Inner leaf faces | Only called by face culling (`Block#shouldRenderFace`) and Sodium's occlusion; not collision or light |
 | `FramerateLimitTracker#getFramerateLimit` | FPS cap | Ticks run at 20/s regardless of FPS |
+
+## Hiding entities behind walls (Optimized, Potato)
+How it decides: after vanilla's own checks say an entity would be drawn, Turbo casts rays from the
+camera to the centre of the entity's culling box and to points at most 1 block apart on every face
+of that box facing the camera. If every ray hits an opaque block first, the entity is skipped for
+that frame. The box is the renderer's own culling box (the one vanilla's frustum test uses), padded
+by the same 0.5 blocks vanilla pads it by, and widened to cover the entity's shadow.
+
+Kept on the safe side:
+- Only full, opaque, drawn cubes block a ray. Glass, leaves, slabs, stairs, fences, barriers and
+  other see-through or partial blocks never hide anything.
+- A block only counts once its chunk section is built and shown (vanilla or Sodium), so nothing
+  vanishes behind terrain that hasn't loaded in yet.
+- Re-checked every frame: an entity that comes into view is drawn that same frame. "Visible" is
+  remembered for 3 frames, "hidden" never.
+- Always drawn: anything showing a nametag (nametags show through walls), glowing entities
+  (outlines show through walls), leashed mobs, guardians and end crystals (beams), shulkers,
+  display entities, fishing hooks, lightning, the ender dragon, you, your vehicle and passengers.
+- Off when the camera is inside an opaque block (spectator).
+
+Limit: rays are spaced up to 1 block apart, so an entity seen only through a sliver narrower than
+that (for example through two offset windows lined up at a steep angle) can be skipped. That is why
+it is in Optimized and not Minimal.
+
+Tested: a wall with a 1x1 window, a glass section, and husks, an armor stand, a named husk, a glowing
+husk and an item frame on both sides. Screenshots with the setting off and on show the same
+entities (differences are only arm-swing timing and clouds). With 78 husks behind the wall, 65 were
+skipped. With the spectator camera inside the wall, none were.
 
 ## Exact (Minimal) optimizations, and their limits
 - **Fog culling**: only where everything past the fog's end is pure fog colour (water, lava,

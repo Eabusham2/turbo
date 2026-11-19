@@ -1,6 +1,7 @@
 package com.eyad.turbo.mixin.render;
 
 import com.eyad.turbo.config.TurboConfig;
+import com.eyad.turbo.util.Occlusion;
 import com.eyad.turbo.util.RenderStats;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
@@ -47,6 +48,7 @@ public abstract class GameRendererMixin {
     @Inject(method = "renderLevel", at = @At("HEAD"), cancellable = true)
     private void turbo$skipWhenMinimized(DeltaTracker deltaTracker, CallbackInfo ci) {
         RenderStats.newFrame();
+        Occlusion.newFrame();
         if (!TurboConfig.on() || !TurboConfig.get().skipRenderWhenMinimized) return;
         if (this.minecraft.getWindow() == null || !this.minecraft.getWindow().isMinimized()) return;
         // Keep the two non-drawing jobs renderLevel does, so game state stays identical:
