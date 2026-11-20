@@ -50,7 +50,7 @@ public class TurboConfig {
     @Tweak(category="Entities", label="Skip entities and block entities hidden by fog", tooltip="Underwater, in lava or powder snow, with Blindness or Darkness, and in the Nether, anything past the fog's end is drawn as pure fog colour, so it is skipped. Players, named, glowing and leashed entities and beacon beams are always drawn. Looks identical.", live=true)
     public boolean fogCulling = true;
     @Tweak(category="Entities", label="Hide entities behind walls", tooltip="Skips drawing entities that solid blocks completely hide from where you're looking. Checked with rays every frame, so nothing pops in late. Glass, leaves, slabs and other see-through or partial blocks never hide anything. Entities showing a nametag, glowing, leashed, beams and displays are always drawn.", live=true)
-    public boolean occlusionCulling = false;
+    public boolean occlusionCulling = true;
     @Tweak(category="Entities", label="Max entity render distance (0 = vanilla)", tooltip="You, your vehicle and your passengers are never hidden.", live=true)
     public int entityRenderDistance = 0;
     @Tweak(category="Entities", label="Limit nametag distance", tooltip="Vanilla draws nametags out to 64 blocks.", live=true)
@@ -303,6 +303,10 @@ public class TurboConfig {
                 TurboConfig c = GSON.fromJson(Files.readString(p), TurboConfig.class);
                 if (c != null) {
                     if (c.preset == null) c.preset = Preset.CUSTOM;
+                    // A named preset means "that preset's values". Re-apply it so an update that
+                    // changes a preset (e.g. 1.1.1 adding behind-walls culling to Minimal) reaches
+                    // players who picked it. Custom setups are left exactly as they are.
+                    if (c.preset != Preset.CUSTOM) c.preset.applyTo(c);
                     c.save();
                     return c;
                 }

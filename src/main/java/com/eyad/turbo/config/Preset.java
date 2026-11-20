@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 /**
  * One-click profiles.
  *
- *   MINIMAL   - looks and sounds exactly like vanilla; only skips work you can't see or hear.
+ *   MINIMAL   - looks and sounds like vanilla; only skips work you can't see or hear
+ *               (entities behind walls or hidden by fog, inaudible sounds, the world while minimized).
  *   OPTIMIZED - looks about the same; hides far-away clutter. Recommended for most people.
  *   POTATO    - every setting on, smallest distances.
  *   CUSTOM    - you changed individual settings after picking a preset.
@@ -54,7 +55,6 @@ public enum Preset {
         // Far-away clutter
         c.limitNametags = true;      c.nametagDistance = 32;
         c.decorEntityDistance = 32;
-        c.occlusionCulling = true;
         c.cullItemFrameMaps = true;  c.cheapPaintingRender = true;  c.cheapArmorStands = true;
         c.hideFarDroppedItems = true; c.disableXpOrbRender = true;  c.skipFallingBlockRender = true;
         c.reduceProjectileParticles = true;
