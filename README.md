@@ -1,7 +1,7 @@
 # Turbo
 
 Client-side FPS mod for **Minecraft 1.21.11 (Fabric)**. It sits on top of Sodium and skips
-drawing and audio work you don't need: entities hidden behind walls, far-away clutter, hidden-by-fog
+drawing and audio work you don't need: things hidden behind walls, far-away clutter, hidden-by-fog
 objects, particle floods, inaudible sounds, overlays.
 
 **Rule for every setting: it may change what is drawn or heard, never how the game plays.**
@@ -14,9 +14,9 @@ Pick one in ModMenu → Turbo → Presets, then Save.
 
 | Preset | Looks | What it does |
 |---|---|---|
-| **Minimal** (default) | Same as vanilla | Skips entities completely hidden behind walls, skips entities and block entities fully hidden by fog, skips sounds too far away to hear, skips the world render while minimized. |
+| **Minimal** (default) | Same as vanilla | Skips entities and block entities completely hidden behind walls, skips entities and block entities fully hidden by fog, skips sounds too far away to hear, skips the world render while minimized. |
 | **Optimized** (recommended) | About the same | Minimal, plus: hides item frames, armor stands, paintings, dropped items, XP orbs, projectiles past 32 blocks; block entities past 48; nametags past 32; one model per dropped stack; particle cap; smart leaves; half-speed water/lava/fire animation; sound cap and de-duplication; 30 FPS when unfocused; no menu blur. |
-| **Potato** | Noticeably plainer | Every setting on, smallest distances. Also mutes all sounds and hides the scoreboard, since it is literally everything; switch those two back off if you want them. The debug line (General tab) is left as you set it. |
+| **Potato** | Noticeably plainer | Every setting on, smallest distances, except that chests, signs, banners and other block entities stay visible: they are only hidden behind walls. Also mutes all sounds and hides the scoreboard, since it is literally everything; switch those two back off if you want them. The debug line (General tab) is left as you set it. |
 
 Changing any single setting afterwards switches the preset to **Custom**.
 
@@ -25,7 +25,7 @@ Changing any single setting afterwards switches the preset to **Custom**.
 | Tab | Examples |
 |---|---|
 | Frame | Skip rendering while minimized, unfocused / in-menu FPS caps, no menu blur, no title panorama |
-| Entities | Hide entities behind walls, fog culling, max entity distance, nametag distance, hide decor past a distance (item frames, armor stands, paintings, items, XP, TNT, projectiles, boats, minecarts), no shadows, no fire on entities, no guardian beams, capes, skin layers, elytra, shield patterns, armor trims and glint |
+| Entities | Hide entities and block entities behind walls, fog culling, max entity distance, nametag distance, hide decor past a distance (item frames, armor stands, paintings, items, XP, TNT, projectiles, boats, minecarts), no shadows, no fire on entities, no guardian beams, capes, skin layers, elytra, shield patterns, armor trims and glint |
 | Block Entities | Hide all past N, per type (chests, signs, heads, banners, bells, conduits, gateways, spawner mobs, enchanting books, beacon beams), banner layer cap |
 | Particles | Exact global cap, spawn distance, per-type switches (block break, rain, explosion, potion, crit, bubbles, campfire smoke, portal, firework, redstone dust, end rod, pickup animation) |
 | Render | Damage tilt, view bob, all screen overlays, mining cracks, map markers, rain/snow, clouds, stars, End sky, fog (all / underwater / Nether / End) |
@@ -36,7 +36,7 @@ Changing any single setting afterwards switches the preset to **Custom**.
 | Aggressive | All particles / overlays / block entities / sounds off |
 
 Optional debug line (General tab): shows the preset, FPS, live particles and how many entities and
-block entities were skipped last frame, plus how many entities were hidden behind walls.
+block entities were skipped last frame, plus how many entities and block entities were hidden behind walls.
 
 ## Install
 

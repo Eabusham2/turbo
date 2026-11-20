@@ -2,6 +2,7 @@ package com.eyad.turbo.util;
 
 import it.unimi.dsi.fastutil.HashCommon;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 /**
- * "Hidden behind walls" test for entities. Render thread only.
+ * "Hidden behind walls" test for entities and block entities. Render thread only.
  *
  * An entity counts as hidden only when no straight line from the camera reaches its (padded)
  * culling box without passing through an opaque block. Rays go to the box centre first, then to
@@ -43,6 +44,7 @@ public final class Occlusion {
 
     private static final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
     private static final Int2IntOpenHashMap lastVisible = new Int2IntOpenHashMap();
+    private static final Long2IntOpenHashMap lastVisibleBlock = new Long2IntOpenHashMap();
 
     private static int frame = 1;
     private static int cameraCheckedFrame;
@@ -52,29 +54,43 @@ public final class Occlusion {
     public static void newFrame() {
         frame++;
         if (lastVisible.size() > 8192) lastVisible.clear();
+        if (lastVisibleBlock.size() > 16384) lastVisibleBlock.clear();
     }
 
-    /** True if every line of sight from the camera to the box is blocked. */
+    /** True if every line of sight from the camera to the entity's box is blocked. */
     public static boolean isHidden(Minecraft mc, int entityId, AABB box, double cx, double cy, double cz) {
-        Level level = mc.level;
-        if (level == null || mc.levelRenderer == null) return false;
-
-        if (cameraCheckedFrame != frame) {
-            cameraCheckedFrame = frame;
-            cameraInsideBlock = blocks(mc, level, floor(cx), floor(cy), floor(cz));
-        }
-        if (cameraInsideBlock) return false;
-
-        if (box.contains(cx, cy, cz)) return false;
-
-        int seen = lastVisible.getOrDefault(entityId, Integer.MIN_VALUE);
-        if (seen != Integer.MIN_VALUE && frame - seen <= VISIBLE_FRAMES && frame - seen >= 0) return false;
-
-        if (anyRayReaches(mc, level, box, cx, cy, cz)) {
+        if (!canTest(mc, box, cx, cy, cz)) return false;
+        if (recent(lastVisible.getOrDefault(entityId, Integer.MIN_VALUE))) return false;
+        if (anyRayReaches(mc, mc.level, box, cx, cy, cz)) {
             lastVisible.put(entityId, frame);
             return false;
         }
         return true;
+    }
+
+    /** Same test for a block entity, keyed by its block position. */
+    public static boolean isBlockHidden(Minecraft mc, long blockPos, AABB box, double cx, double cy, double cz) {
+        if (!canTest(mc, box, cx, cy, cz)) return false;
+        if (recent(lastVisibleBlock.getOrDefault(blockPos, Integer.MIN_VALUE))) return false;
+        if (anyRayReaches(mc, mc.level, box, cx, cy, cz)) {
+            lastVisibleBlock.put(blockPos, frame);
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean canTest(Minecraft mc, AABB box, double cx, double cy, double cz) {
+        Level level = mc.level;
+        if (level == null || mc.levelRenderer == null) return false;
+        if (cameraCheckedFrame != frame) {
+            cameraCheckedFrame = frame;
+            cameraInsideBlock = blocks(mc, level, floor(cx), floor(cy), floor(cz));
+        }
+        return !cameraInsideBlock && !box.contains(cx, cy, cz);
+    }
+
+    private static boolean recent(int seen) {
+        return seen != Integer.MIN_VALUE && frame - seen >= 0 && frame - seen <= VISIBLE_FRAMES;
     }
 
     private static boolean anyRayReaches(Minecraft mc, Level level, AABB b, double cx, double cy, double cz) {

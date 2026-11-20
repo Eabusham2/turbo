@@ -8,7 +8,8 @@ import java.lang.reflect.Field;
  *   MINIMAL   - looks and sounds like vanilla; only skips work you can't see or hear
  *               (entities behind walls or hidden by fog, inaudible sounds, the world while minimized).
  *   OPTIMIZED - looks about the same; hides far-away clutter. Recommended for most people.
- *   POTATO    - every setting on, smallest distances.
+ *   POTATO    - every setting on, smallest distances, except anything that hides a block
+ *               entity you could see (block entities are only hidden behind walls or in fog).
  *   CUSTOM    - you changed individual settings after picking a preset.
  *
  * Applying a preset first resets every setting to its default (= Minimal), then layers the
@@ -74,9 +75,19 @@ public enum Preset {
         c.dedupeSimultaneousSounds = true;
     }
 
+    /**
+     * Potato never hides a block entity (chest, sign, banner, head, beam, book...) that you could
+     * see: those are only hidden behind walls or in fog. So it skips the Block Entities tab's hide
+     * switches and "Hide ALL block entities".
+     */
+    private static boolean potatoSkips(Field f, Tweak t) {
+        return t.category().equals("Block Entities") || f.getName().equals("noBlockEntities");
+    }
+
     private static void potato(TurboConfig c) {
         for (Field f : TurboConfig.class.getDeclaredFields()) {
-            if (f.getAnnotation(Tweak.class) == null || f.getType() != boolean.class || PERSONAL.contains(f.getName())) continue;
+            Tweak t = f.getAnnotation(Tweak.class);
+            if (t == null || f.getType() != boolean.class || PERSONAL.contains(f.getName()) || potatoSkips(f, t)) continue;
             try {
                 f.setAccessible(true);
                 f.setBoolean(c, true);
@@ -84,7 +95,6 @@ public enum Preset {
         }
         c.unfocusedFps = 10;        c.menuFps = 30;
         c.entityRenderDistance = 32; c.nametagDistance = 16; c.decorEntityDistance = 16;
-        c.blockEntityDistance = 16;  c.signTextDistance = 12; c.beaconBeamDistance = 32;
         c.maxBannerLayers = 1;
         c.maxParticles = 1000;       c.particleCullDistance = 12;
         c.soundCullDistance = 24;    c.maxConcurrentSounds = 32;

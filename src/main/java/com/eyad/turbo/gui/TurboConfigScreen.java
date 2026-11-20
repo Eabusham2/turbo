@@ -43,12 +43,13 @@ public final class TurboConfigScreen {
                 .setSaveConsumer(p -> picked[0] = p)
                 .build());
         presets.addEntry(eb.startTextDescription(Component.literal(
-                "Minimal: looks and sounds like vanilla. Only skips work you can't see or hear: entities completely hidden behind walls "
+                "Minimal: looks and sounds like vanilla. Only skips work you can't see or hear: entities and block entities completely hidden behind walls "
                 + "or by fog, sounds too far away to hear, and the world while minimized.\n\n"
                 + "Optimized: looks about the same. Minimal plus: hides far-away clutter (item frames, armor stands, dropped items, "
                 + "far block entities), caps particles and sounds, smart leaves, half-speed water/lava/fire animation. "
                 + "Recommended for most people.\n\n"
-                + "Potato: every setting on with the smallest distances. Also mutes all sounds and hides the "
+                + "Potato: every setting on with the smallest distances. Chests, signs, banners and other block "
+                + "entities stay visible and are only hidden behind walls. Also mutes all sounds and hides the "
                 + "scoreboard; turn those back off if you want them.\n\n"
                 + "No setting changes how the game plays: only what is drawn or heard.")).build());
 

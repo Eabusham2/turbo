@@ -39,7 +39,8 @@ public class TurboMod implements ClientModInitializer {
                     + " | particles " + mc.particleEngine.countParticles()
                     + " | skipped: " + RenderStats.lastEntities + " entities, "
                     + RenderStats.lastBlockEntities + " block entities, "
-                    + RenderStats.lastOccluded + " behind walls";
+                    + " | behind walls: " + RenderStats.lastOccluded + " entities, "
+                    + RenderStats.lastBlocksOccluded + " block entities";
             graphics.drawString(mc.font, text, graphics.guiWidth() - mc.font.width(text) - 2, 2, 0xFFFFFFFF);
         });
 

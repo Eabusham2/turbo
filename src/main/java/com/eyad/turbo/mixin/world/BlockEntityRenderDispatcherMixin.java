@@ -3,7 +3,9 @@ package com.eyad.turbo.mixin.world;
 import com.eyad.turbo.config.TurboConfig;
 import com.eyad.turbo.util.Effective;
 import com.eyad.turbo.util.FogCull;
+import com.eyad.turbo.util.Occlusion;
 import com.eyad.turbo.util.RenderStats;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.entity.TrialSpawnerBlockEntity;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -86,6 +89,23 @@ public abstract class BlockEntityRenderDispatcherMixin {
 
         int all = Effective.blockEntityDistance();
         if (all > 0 && d2 > (double) all * all) { skip(cir); return; }
+
+        // Behind walls: renderers that draw outside their block (beams, structure blocks...) are
+        // never tested. The box is the block padded by 1 (2 upward) so standing banners, wall
+        // banners, open shulker lids, floating books and items all stay inside it.
+        if (c.occlusionCulling) {
+            BlockEntityRenderer<BlockEntity, BlockEntityRenderState> r =
+                    ((BlockEntityRenderDispatcher) (Object) this).getRenderer(be);
+            if (r != null && !r.shouldRenderOffScreen()) {
+                AABB box = new AABB(p.getX() - 1.0, p.getY() - 1.0, p.getZ() - 1.0, p.getX() + 2.0, p.getY() + 3.0, p.getZ() + 2.0);
+                if (Occlusion.isBlockHidden(Minecraft.getInstance(), p.asLong(), box,
+                        this.cameraPos.x, this.cameraPos.y, this.cameraPos.z)) {
+                    RenderStats.blockEntityOccluded();
+                    cir.setReturnValue(null);
+                    return;
+                }
+            }
+        }
 
         // Exact: whole padded block past 100% fog. Renderers that draw outside their block
         // (shouldRenderOffScreen: beams, structure blocks...) are never fog-culled.

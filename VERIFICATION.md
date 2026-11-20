@@ -31,12 +31,17 @@ Every hook sits in a drawing, audio or HUD path:
 | `LeavesBlock#skipRendering` | Inner leaf faces | Only called by face culling (`Block#shouldRenderFace`) and Sodium's occlusion; not collision or light |
 | `FramerateLimitTracker#getFramerateLimit` | FPS cap | Ticks run at 20/s regardless of FPS |
 
-## Hiding entities behind walls (every preset, Minimal included)
+## Hiding entities and block entities behind walls (every preset, Minimal included)
 How it decides: after vanilla's own checks say an entity would be drawn, Turbo casts rays from the
 camera to the centre of the entity's culling box and to points at most 1 block apart on every face
 of that box facing the camera. If every ray hits an opaque block first, the entity is skipped for
 that frame. The box is the renderer's own culling box (the one vanilla's frustum test uses), padded
 by the same 0.5 blocks vanilla pads it by, and widened to cover the entity's shadow.
+
+Block entities (chests, signs, banners, heads, beds, books, spawners...) get the same test against
+their block padded by 1 block on every side and 2 upward, so standing and wall banners, open
+shulker lids, floating books and items stay inside the box. Block entities that draw outside their
+block (beacon and end gateway beams, structure blocks) are never tested.
 
 Kept on the safe side:
 - Only full, opaque, drawn cubes block a ray. Glass, leaves, slabs, stairs, fences, barriers and
@@ -54,7 +59,7 @@ Limit: rays are spaced up to 1 block apart, so an entity seen only through a sli
 that (for example through two offset windows lined up at a steep angle) can be skipped. It is on in
 every preset, Minimal included; if you ever spot a missing entity, turn it off in the Entities tab.
 
-Tested: a wall with a 1x1 window, a glass section, and husks, an armor stand, a named husk, a glowing
+Tested (1.1.0): a wall with a 1x1 window, a glass section, and husks, an armor stand, a named husk, a glowing
 husk and an item frame on both sides. Screenshots with the setting off and on show the same
 entities (differences are only arm-swing timing and clouds). With 78 husks behind the wall, 65 were
 skipped. With the spectator camera inside the wall, none were.
