@@ -65,3 +65,12 @@ sources jar, to a release.
 ## License
 
 MIT
+
+## Search keywords (ignore)
+
+`turbo`, `minecraft`, `minecraft-java`, `minecraft-1-21-11`, `fabric`, `fabric-mod`,
+`client-side`, `sodium`, `fps`, `rendering`, `entity-culling`, `block-entity-culling`,
+`occlusion-culling`, `fog-culling`, `distance-culling`, `particle-limit`, `sound-culling`, `sound-deduplication`,
+`animation-settings`, `texture-animation`, `smart-leaves`, `nametags`, `hud-settings`, `frame-rate-limit`,
+`minimized-rendering`, `graphics-presets`, `modmenu`, `cloth-config`, `fabric-api`, `java`,
+`java-21`, `gradle`
